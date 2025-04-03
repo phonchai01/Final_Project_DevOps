@@ -1,0 +1,281 @@
+Started by user phonchai homsin
+Obtained Jenkinsfile from git https://github.com/phonchai01/Final_Project_DevOps.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/Pipeline
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/Pipeline/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/phonchai01/Final_Project_DevOps.git # timeout=10
+Fetching upstream changes from https://github.com/phonchai01/Final_Project_DevOps.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.39.5'
+ > git fetch --tags --force --progress -- https://github.com/phonchai01/Final_Project_DevOps.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 29f39035bf390ade7ae17e0292b9c600cb0b5909 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 29f39035bf390ade7ae17e0292b9c600cb0b5909 # timeout=10
+Commit message: "Add files via upload"
+ > git rev-list --no-walk bb4a17c3d0a88d4c592cee9a986211a4b4cf8ed1 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withCredentials
+Masking supported pattern matches of $NETLIFY_AUTH_TOKEN
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Install dependencies)
+[Pipeline] getContext
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker inspect -f . node:18-alpine
+.
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] withDockerContainer
+Jenkins seems to be running inside container e65367c14dbad4befc37d2bd7aee853bd94d8f166b677d37857a65271847ca76
+$ docker run -t -d -u 0:0 -w /var/jenkins_home/workspace/Pipeline --volumes-from e65367c14dbad4befc37d2bd7aee853bd94d8f166b677d37857a65271847ca76 -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:18-alpine cat
+$ docker top 384ea62ab7f692db73c93f94f40cd72a3d7b2e70ace05c7779eadcef0c8e3a0d -eo pid,comm
+[Pipeline] {
+[Pipeline] echo
+📦 Installing dependencies...
+[Pipeline] sh
++ npm install
+
+removed 1171 packages, and audited 1534 packages in 18s
+
+246 packages are looking for funding
+  run `npm fund` for details
+
+29 vulnerabilities (3 low, 11 moderate, 15 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[Pipeline] }
+$ docker stop --time=1 384ea62ab7f692db73c93f94f40cd72a3d7b2e70ace05c7779eadcef0c8e3a0d
+$ docker rm -f --volumes 384ea62ab7f692db73c93f94f40cd72a3d7b2e70ace05c7779eadcef0c8e3a0d
+[Pipeline] // withDockerContainer
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] getContext
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker inspect -f . node:18-alpine
+.
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] withDockerContainer
+Jenkins seems to be running inside container e65367c14dbad4befc37d2bd7aee853bd94d8f166b677d37857a65271847ca76
+$ docker run -t -d -u 0:0 -w /var/jenkins_home/workspace/Pipeline --volumes-from e65367c14dbad4befc37d2bd7aee853bd94d8f166b677d37857a65271847ca76 -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:18-alpine cat
+$ docker top 611dd52a008feb0113c3564934ebd8002f98fca7b827fefe5b718b25d51d3dd5 -eo pid,comm
+[Pipeline] {
+[Pipeline] echo
+🔨 Building the project...
+[Pipeline] sh
++ npm run build
+
+> learn-jenkins-app@0.1.0 build
+> react-scripts build
+
+Creating an optimized production build...
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+Compiled successfully.
+
+File sizes after gzip:
+
+  46.63 kB  build/static/js/main.c64ec5d3.js
+  1.78 kB   build/static/js/787.a1dc0f1b.chunk.js
+  538 B     build/static/css/main.fd921077.css
+
+The project was built assuming it is hosted at /.
+You can control this with the homepage field in your package.json.
+
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  npm install -g serve
+  serve -s build
+
+Find out more about deployment here:
+
+  https://cra.link/deployment
+
+[Pipeline] }
+$ docker stop --time=1 611dd52a008feb0113c3564934ebd8002f98fca7b827fefe5b718b25d51d3dd5
+$ docker rm -f --volumes 611dd52a008feb0113c3564934ebd8002f98fca7b827fefe5b718b25d51d3dd5
+[Pipeline] // withDockerContainer
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] getContext
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker inspect -f . node:18-alpine
+.
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] withDockerContainer
+Jenkins seems to be running inside container e65367c14dbad4befc37d2bd7aee853bd94d8f166b677d37857a65271847ca76
+$ docker run -t -d -u 0:0 -w /var/jenkins_home/workspace/Pipeline --volumes-from e65367c14dbad4befc37d2bd7aee853bd94d8f166b677d37857a65271847ca76 -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:18-alpine cat
+$ docker top 355aeda0dc5a1885c75067cd19581f02364339e76d001a9bd615192e8f6a05eb -eo pid,comm
+[Pipeline] {
+[Pipeline] echo
+🧪 Running function load test...
+[Pipeline] sh
++ node -e 'require('"'"'./netlify/functions/random-menu.js'"'"'); console.log('"'"'Function loaded successfully!'"'"')'
+Function loaded successfully!
+[Pipeline] }
+$ docker stop --time=1 355aeda0dc5a1885c75067cd19581f02364339e76d001a9bd615192e8f6a05eb
+$ docker rm -f --volumes 355aeda0dc5a1885c75067cd19581f02364339e76d001a9bd615192e8f6a05eb
+[Pipeline] // withDockerContainer
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy to Netlify)
+[Pipeline] getContext
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker inspect -f . node:18-alpine
+.
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] withDockerContainer
+Jenkins seems to be running inside container e65367c14dbad4befc37d2bd7aee853bd94d8f166b677d37857a65271847ca76
+$ docker run -t -d -u 0:0 -w /var/jenkins_home/workspace/Pipeline --volumes-from e65367c14dbad4befc37d2bd7aee853bd94d8f166b677d37857a65271847ca76 -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:18-alpine cat
+$ docker top 3a46aa817994a4a0608a80327d9d574385d2a7feb27b0fcf265429480b548420 -eo pid,comm
+[Pipeline] {
+[Pipeline] echo
+🚀 Deploying to Netlify...
+[Pipeline] sh
++ npm install netlify-cli
+npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated npmlog@5.0.1: This package is no longer supported.
+npm warn deprecated gauge@3.0.2: This package is no longer supported.
+npm warn deprecated are-we-there-yet@2.0.0: This package is no longer supported.
+npm warn deprecated glob@8.1.0: Glob versions prior to v9 are no longer supported
+
+added 1170 packages, and audited 2707 packages in 43s
+
+455 packages are looking for funding
+  run `npm fund` for details
+
+35 vulnerabilities (3 low, 17 moderate, 15 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
++ npx netlify link '--id=65915a71-0e6c-4256-831d-c0017c2cfec8'
+Site already linked to "whimsical-brioche-44f22d"
+Admin url: https://app.netlify.com/sites/whimsical-brioche-44f22d
+
+To unlink this site, run: netlify unlink
++ npx netlify deploy '--auth=****' '--site=65915a71-0e6c-4256-831d-c0017c2cfec8' '--dir=build' --prod
+Deploy path:    /var/jenkins_home/workspace/Pipeline/build
+Functions path: /var/jenkins_home/workspace/Pipeline/netlify/functions
+Deploying to main site URL...
+[33m⠋[39m Uploading blobs to deploy store...
+
+​
+Netlify Build                                                 
+────────────────────────────────────────────────────────────────
+​
+❯ Version
+  @netlify/build 30.0.6
+​
+❯ Flags
+  auth: ****
+  deployId: 67ef05e376d97306be422638
+  dir: build
+  open: false
+  prod: true
+  prodIfUnlocked: false
+  site: 65915a71-0e6c-4256-831d-c0017c2cfec8
+  skipFunctionsCache: false
+​
+❯ Current directory
+  /var/jenkins_home/workspace/Pipeline
+​
+❯ Config file
+  No config file was defined: using default values.
+​
+❯ Context
+  dev
+[33m⠙[39m Finished uploading blobs to deploy store
+[33m⠋[39m Hashing files...
+[33m⠋[39m Looking for a functions cache...
+[33m⠙[39m No cached functions were found
+[33m⠙[39m Finished hashing 16 files and 1 functions
+[33m⠋[39m CDN diffing files...
+[33m⠙[39m CDN requesting 0 files and 0 functions
+[33m⠋[39m Uploading 0 files
+[33m⠙[39m Finished uploading 0 assets
+[33m⠋[39m Waiting for deploy to go live...
+[33m⠙[39m Deploy is live!
+
+Build logs:         https://app.netlify.com/sites/whimsical-brioche-44f22d/deploys/67ef05e376d97306be422638
+Function logs:      https://app.netlify.com/sites/whimsical-brioche-44f22d/logs/functions
+Edge function Logs: https://app.netlify.com/sites/whimsical-brioche-44f22d/logs/edge-functions
+Unique deploy URL:  https://67ef05e376d97306be422638--whimsical-brioche-44f22d.netlify.app
+Website URL:        https://whimsical-brioche-44f22d.netlify.app
+[Pipeline] }
+$ docker stop --time=1 3a46aa817994a4a0608a80327d9d574385d2a7feb27b0fcf265429480b548420
+$ docker rm -f --volumes 3a46aa817994a4a0608a80327d9d574385d2a7feb27b0fcf265429480b548420
+[Pipeline] // withDockerContainer
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Post Deploy)
+[Pipeline] echo
+🎉 Deployment complete! Check your site on Netlify.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+✅ CI/CD pipeline executed successfully!
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS

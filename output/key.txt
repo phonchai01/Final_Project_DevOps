@@ -1,0 +1,4 @@
+NETLIFY_SITE_ID = 'nfp_yJ8wobZLXsb1gEw8weG7snYsij7b8HX5b183'
+NETLIFY_AUTH_TOKEN = credentials('netlifyToken')
+
+netlifyToken คือ nfp_yJ8wobZLXsb1gEw8weG7snYsij7b8HX5b183
