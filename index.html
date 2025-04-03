@@ -2,136 +2,180 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <title>สุ่มเมนูอาหาร - Random Menu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>มุกฝืดสลับข้าง</title>
   <style>
-    /* รีเซ็ตขนาด margin/padding พื้นฐาน */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
-      font-family: sans-serif;
-      background: #f7f7f7;
-      color: #333;
-      line-height: 1.6;
-      padding: 20px;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-
-    p.description {
-      font-size: 1.1rem;
-      color: #666;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #fff;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .result {
-      text-align: center;
-      margin: 20px 0;
-      padding: 20px;
-      border: 2px dashed #ddd;
-      border-radius: 6px;
-      background: #fafafa;
-    }
-
-    .result h2 {
-      font-size: 1.5rem;
-      margin-bottom: 10px;
-      color: #444;
-    }
-
-    .result p {
-      font-size: 1.2rem;
-      color: #222;
-    }
-
-    button {
-      display: inline-block;
-      margin: 0 auto;
-      padding: 12px 20px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 4px;
-      background: #007BFF;
+      font-family: "Prompt", sans-serif;
+      background: #121212;
       color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    .chat-box {
+      max-width: 600px;
+      width: 100%;
+      background: #1e1e1e;
+      padding: 1rem;
+      border-radius: 10px;
+      height: 70vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .message {
+      display: flex;
+      margin: 0.5rem 0;
+      animation: fadeInUp 0.3s ease;
+    }
+    .left { justify-content: flex-start; }
+    .right { justify-content: flex-end; }
+    .bubble {
+      background: #2c2c2c;
+      padding: 0.75rem 1rem;
+      border-radius: 15px;
+      max-width: 80%;
+      word-wrap: break-word;
+      transition: all 0.3s ease;
+    }
+    
+    .right .bubble {
+      background: #2ecc71;
+      color: #000;
+    }
+    
+    button {
+      margin-top: 1rem;
+      padding: 0.6rem 1.5rem;
+      background: #00b894;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
       cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
-
-    button:hover {
-      background: #0056b3;
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-
-    footer {
-      text-align: center;
-      margin-top: 40px;
-      font-size: 0.9rem;
-      color: #888;
+    #omgImage {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 9999;
+      opacity: 1;
+    }
+  
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>สุ่มเมนูอาหาร (Random Menu)</h1>
-    <p class="description">กดปุ่มด้านล่าง เพื่อสุ่มเมนูอาหาร</p>
-  </header>
+  <h1>Everyday Jokes</h1>
+  <div class="chat-box" id="chatBox"></div>
+  <button onclick="showNext()">Next</button>
 
-  <div class="container">
-    <div class="result">
-      <h2 id="menuMessage">—</h2>
-      <p id="menuItem">—</p>
-    </div>
+  <!--รูป-->
+  <img src="OMG.jpg" id="omgImage" style="display: none;" />
 
-    <div style="text-align:center;">
-      <button onclick="getRandomMenu()">สุ่มเมนูอาหาร</button>
-    </div>
-  </div>
-
-  <footer>
-    <p>Deploy ด้วย Jenkins + Netlify</p>
-  </footer>
+  <!-- เสียง -->
+  <audio id="Dun" src="Dun.mp3"></audio>
+  <audio id="endSound" src="Slap.mp3"></audio>
 
   <script>
-    // ฟังก์ชันดึงข้อมูลสุ่มเมนูอาหารจาก Netlify Function
-    async function getRandomMenu() {
-      try {
-        const response = await fetch('/.netlify/functions/random-menu');
-        if (!response.ok) {
-          throw new Error('เกิดข้อผิดพลาดในการดึงข้อมูลเมนู');
-        }
-        const data = await response.json();
-        
-        // อัปเดตข้อความในหน้าเว็บ
-        document.getElementById('menuMessage').textContent = data.message;
-        document.getElementById('menuItem').textContent = data.menu;
-      } catch (err) {
-        document.getElementById('menuMessage').textContent = 'Error';
-        document.getElementById('menuItem').textContent = err.message;
-      }
-    }
+    const jokes = [
+      ["ทำไมกบถึงไม่เรียนหนังสือ?", "เพราะมันกลัวสอบตก"],
+      ["ลุงถือกล้วยเข้าร้านทอง ทำไม?", "จะเอาไปแลกกล้วยบาท"],
+      ["ทำไมตู้เย็นถึงฉลาด?", "เพราะมันรู้วิธีเก็บความเย็น"],
+      ["ถ้าไฟไหม้ห้องสมุดจะทำไง?", "ก็อ่านเร็วขึ้นไง"],
+      ["ทำไมช้อนถึงไม่เคยทะเลาะกับส้อม?", "เพราะมันคนละซุป"],
+      ["ไก่กับไข่อะไรเกิดก่อนกัน?", "เกิดพร้อมบิลค่าไฟ เพราะใช้ไมโครเวฟ"],
+      ["ทำไมผีถึงไม่เรียนเลข?", "เพราะมันกลัวจำนวนวิญญาณลบ"],
+      ["นักมายากลชอบใช้ภาษาอะไร?", "ภาษา C++ เพราะชอบเพิ่มความลับ"],
+      ["ทำไมจิ้งจกถึงไม่ไปทำงาน?", "เพราะมันต้องเฝ้าผนัง"],
+      ["ปลาอะไรไม่ใช่สัตว์?", "ปล.ท้ายจดหมาย"],
+      ["นักบินกินข้าวที่ไหน?", "ที่สนามบิน"],
+      ["ทำไมต้องใส่หมวกกันน็อคเวลาขี่จักรยาน?", "เพราะหมวกกันข้าวไม่ได้"],
+      ["ทำไมคอมถึงไม่เคยมีความลับ?", "เพราะมันมีแต่ Windows"],
+      ["ทำไมเสือถึงไม่กินอาหารสำเร็จรูป?", "เพราะมันเป็นเสือสด"],
+      ["ผักอะไรเอาไว้เปิดคอม?", "ผัก Enter"],
+      ["อะไรเอ่ยวิ่งไม่หยุด?", "นาฬิกาปลุกที่ไม่มีคนกด"],
+      ["จรวดพูดว่าไงตอนจะออก?", "บ๊าย บาย โลก"],
+      ["ทำไมแมวถึงไม่เป็นนักวิ่ง?", "เพราะมันชอบเดินแบบ"],
+      ["โต๊ะทำงานกลัวอะไร?", "กลัวงาน"],
+      ["รองเท้าแตะทะเลาะกับรองเท้าผ้าใบเรื่องอะไร?", "เรื่องกลิ่น"],
+    ];
 
-    // โหลดหน้าแล้วให้สุ่มเมนูครั้งแรกอัตโนมัติ
-    window.addEventListener('DOMContentLoaded', () => {
-      getRandomMenu();
-    });
+
+
+    let jokeIndex = 0;
+    let side = "left"; 
+
+    function showNext() {
+      const chatBox = document.getElementById("chatBox");
+      const endSound = document.getElementById("endSound");
+      const dunSound = document.getElementById("Dun");
+      const omgImage = document.getElementById("omgImage");
+    
+
+      endSound.currentTime = 0;
+      endSound.play().catch(() => {});
+    
+
+      setTimeout(() => {
+        // รีเซ็ต animation
+        omgImage.style.display = "block";
+        omgImage.style.animation = "none";
+        void omgImage.offsetWidth; 
+        omgImage.style.animation = "fadeOut 1s ease-out forwards";
+    
+        // เล่นเสียง dun ตอนแสดงภาพ
+        dunSound.currentTime = 0;
+        dunSound.play().catch(() => {});
+      }, 3100);
+    
+      const [q, a] = jokes[jokeIndex];
+    
+      const createBubble = (text, align) => {
+        const wrap = document.createElement("div");
+        wrap.className = `message ${align}`;
+        const bubble = document.createElement("div");
+        bubble.className = "bubble";
+        bubble.textContent = "";
+        wrap.appendChild(bubble);
+        chatBox.appendChild(wrap);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    
+        let i = 0;
+        const interval = setInterval(() => {
+          bubble.textContent += text[i];
+          i++;
+          if (i >= text.length) clearInterval(interval);
+        }, 50);
+      };
+    
+      createBubble(q, side);
+      side = side === "left" ? "right" : "left";
+      setTimeout(() => createBubble(a, side), q.length * 60);
+      jokeIndex = (jokeIndex + 1) % jokes.length;
+    }
   </script>
+
 </body>
 </html>
