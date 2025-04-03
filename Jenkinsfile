@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        NETLIFY_SITE_ID = 'nfp_yJ8wobZLXsb1gEw8weG7snYsij7b8HX5b183'
-        NETLIFY_AUTH_TOKEN = credentials('netlifyToken')
+        NETLIFY_SITE_ID = 'nfp_yJ8wobZLXsb1gEw8weG7snYsij7b8HX5b183'  // ใส่ ID ใหม่ตรงนี้
+        NETLIFY_AUTH_TOKEN = credentials('netlifyToken')            // ใช้ token จาก Jenkins Credential
     }
 
     stages {
@@ -48,15 +48,14 @@ pipeline {
             }
             steps {
                 echo "🚀 Deploying the project to Netlify..."
-                sh """
+                sh '''
                     npm install netlify-cli
-                    npx netlify link --id="\$NETLIFY_SITE_ID"
-                    npx netlify deploy \\
-                      --auth="\$NETLIFY_AUTH_TOKEN" \\
-                      --site="\$NETLIFY_SITE_ID" \\
-                      --dir=. \\
+                    npx netlify deploy \
+                      --auth="$NETLIFY_AUTH_TOKEN" \
+                      --site="$NETLIFY_SITE_ID" \
+                      --dir=. \
                       --prod
-                """
+                '''
             }
         }
 
