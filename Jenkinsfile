@@ -15,11 +15,11 @@ pipeline {
                 }
             }
             steps {
-                echo " Verifying required files..."
+                echo "🔍 Verifying required files..."
                 sh '''
                     test -f index.html || (echo "index.html is missing!" && exit 1)
                     test -f netlify/functions/random-menu.js || (echo "The random menu function is missing!" && exit 1)
-                    echo "All necessary files are in place!"
+                    echo "✅ All necessary files are in place!"
                 '''
             }
         }
@@ -32,7 +32,7 @@ pipeline {
                 }
             }
             steps {
-                echo "Running function load test..."
+                echo "🧪 Running function load test..."
                 sh '''
                     node -e "require('./netlify/functions/random-menu.js'); console.log('Function loaded successfully!')"
                 '''
@@ -47,13 +47,13 @@ pipeline {
                 }
             }
             steps {
-                echo "Deploying the project to Netlify..."
+                echo "🚀 Deploying the project to Netlify..."
                 sh '''
                     npm install netlify-cli
-                    npx netlify link --id=$NETLIFY_SITE_ID
+                    npx netlify link --id="${NETLIFY_SITE_ID}"
                     npx netlify deploy \
-                      --auth=$NETLIFY_AUTH_TOKEN \
-                      --site=$NETLIFY_SITE_ID \
+                      --auth="${NETLIFY_AUTH_TOKEN}" \
+                      --site="${NETLIFY_SITE_ID}" \
                       --dir=. \
                       --prod
                 '''
@@ -69,10 +69,10 @@ pipeline {
 
     post {
         success {
-            echo "CI/CD pipeline executed successfully!"
+            echo "✅ CI/CD pipeline executed successfully!"
         }
         failure {
-            echo "An error occurred during the pipeline execution. Please check the logs!"
+            echo "❌ An error occurred during the pipeline execution. Please check the logs!"
         }
     }
 }
