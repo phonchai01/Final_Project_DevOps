@@ -2,9 +2,10 @@ pipeline {
     agent any
 
     environment {
-        NETLIFY_SITE_ID = '65915a71-0e6c-4256-831d-c0017c2cfec8' // ใช้ Site ID ที่ได้จาก `netlify sites:list`
-        NETLIFY_AUTH_TOKEN = credentials('netlifyToken')        // Token ต้องตั้งไว้ใน Jenkins > Manage Credentials
+        NETLIFY_SITE_ID = '65915a71-0e6c-4256-831d-c0017c2cfec8'
+        NETLIFY_AUTH_TOKEN = credentials('netlifyToken')  // ใช้ ID ที่ตั้งไว้
     }
+
 
     stages {
         stage('Install dependencies') {
